@@ -25,7 +25,7 @@ elif [[ ${PV} == "9999" ]] ; then
 else
 	SRC_URI="http://downloads.slimdevices.com/LogitechMediaServer_v${PV}/${MY_PN}-${PV}.tgz"
 	S="${WORKDIR}/${MY_PN}-${PV}"
-	KEYWORDS="~amd64 ~arm64"
+	KEYWORDS="~amd64 ~arm64 ~arm"
 fi
 
 DESCRIPTION="Logitech Media Server (streaming audio server)"
@@ -56,8 +56,10 @@ RDEPEND="
 QA_PREBUILT="
 	opt/logitechmediaserver/Bin/x86_64-linux/*
 	opt/logitechmediaserver/Bin/aarch64-linux/*
+	opt/logitechmediaserver/Bin/arm-linux/*
 	opt/logitechmediaserver/CPAN/arch/${PERL_VER}/x86_64-linux-thread-multi/*
 	opt/logitechmediaserver/CPAN/arch/${PERL_VER}/aarch64-linux-thread-multi/*
+	opt/logitechmediaserver/CPAN/arch/${PERL_VER}/arm-linux-thread-multi/*
 "
 
 RUN_UID=logitechmediaserver
@@ -92,7 +94,7 @@ src_prepare() {
 	epatch "${FILESDIR}/${P}-uuid-gentoo.patch"
 	epatch "${FILESDIR}/${P}-client-playlists-gentoo.patch"
 	(cd CPAN/arch && rm -rf 5.10 5.12 5.14 5.16 5.18 5.20 5.22 5.24 5.26 5.8)
-	(cd CPAN/arch/${PERL_VER} && rm -rf arm-linux* i386-linux* x86_64*)
+	(cd CPAN/arch/${PERL_VER} && rm -rf aarch64* i386-linux* x86_64*)
 	(cd Bin && rm -rf aarch64* arm*-linux i86pc-solaris* sparc-linux i386-linux powerpc-linux x86_64*)
 	eapply_user
 }
@@ -182,6 +184,7 @@ pkg_postinst() {
 	#remove bin
         rm /opt/logitechmediaserver/Bin/x86_64-linux/*
         rm /opt/logitechmediaserver/Bin/aarch64-linux/*
+				rm /opt/logitechmediaserver/Bin/arm-linux/*
 
 	# Point user to database configuration step, if an old installation
 	# of SBS is found.
