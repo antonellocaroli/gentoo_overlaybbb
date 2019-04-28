@@ -42,6 +42,7 @@ DEPEND="
 	app-arch/unzip
 	media-video/ffmpeg
 	media-sound/sox-dsd
+	dev-db/sqlite
 	"
 
 # Runtime dependencies.
