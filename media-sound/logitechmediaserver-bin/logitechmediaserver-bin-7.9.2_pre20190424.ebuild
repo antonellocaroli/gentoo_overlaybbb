@@ -42,7 +42,8 @@ DEPEND="
 	app-arch/unzip
 	media-video/ffmpeg
 	media-sound/sox-dsd
-	dev-db/sqlite
+	dev-perl/DBD-SQLite
+	dev-perl/IO-Socket-SSL
 	"
 
 # Runtime dependencies.
