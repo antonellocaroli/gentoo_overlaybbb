@@ -42,8 +42,6 @@ DEPEND="
 	app-arch/unzip
 	media-video/ffmpeg
 	media-sound/sox-dsd
-	dev-perl/DBD-SQLite
-	dev-perl/IO-Socket-SSL
 	"
 
 # Runtime dependencies.
@@ -53,6 +51,25 @@ RDEPEND="
 	app-admin/logrotate
 	=dev-lang/perl-${PERL_VER}*[ithreads]
 	>=dev-perl/Data-UUID-1.202
+	>=dev-perl/Audio-Scan-0.930.0
+	>=virtual/perl-IO-Compress-2.015
+	>=dev-perl/Class-C3-XS-0.13
+	>=dev-perl/Class-XSAccessor-1.03
+	>=dev-perl/DBI-1.607
+	>=dev-perl/DBD-SQLite-1.350.0
+	>=dev-perl/Digest-SHA1-2.11
+	>=dev-perl/EV-4.150.0
+	>=dev-perl/Encode-Detect-1.01
+	>=dev-perl/HTML-Parser-3.56
+	>=dev-perl/Image-Scale-0.80.0
+	>=virtual/perl-IO-Compress-2.015
+	>=dev-perl/IO-String-1.08
+	>=dev-perl/JSON-XS-2.2.3.1
+	>=dev-perl/Sub-Name-0.04
+	>=dev-perl/Template-Toolkit-2.19
+	>=dev-perl/XML-Parser-2.36
+	>=dev-perl/YAML-LibYAML-0.410.0
+	>=dev-perl/IO-Socket-SSL-2.24.0
 	"
 
 QA_PREBUILT="
@@ -95,8 +112,9 @@ pkg_setup() {
 src_prepare() {
 	epatch "${FILESDIR}/${P}-uuid-gentoo.patch"
 	epatch "${FILESDIR}/${P}-client-playlists-gentoo.patch"
+	(cd CPAN && rm -rf Image)
 	(cd CPAN/arch && rm -rf 5.10 5.12 5.14 5.16 5.18 5.20 5.22 5.24 5.26 5.8)
-	(cd CPAN/arch/${PERL_VER} && rm -rf aarch64* i386-linux* x86_64*)
+	(cd CPAN/arch/${PERL_VER} && rm -rf aarch64* i386-linux* x86_64* arm-linux*)
 	(cd Bin && rm -rf aarch64* arm*-linux i86pc-solaris* sparc-linux i386-linux powerpc-linux x86_64*)
 	eapply_user
 }
@@ -155,6 +173,9 @@ src_install() {
 	# Install logrotate support
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/logitechmediaserver.logrotate.d" "${MY_PN}"
+	#symlink
+	dosym /usr/lib64/perl5/vendor_perl/5.28.2/armv7a-linux-thread-multi /opt/logitechmediaserver/CPAN/arch/5.28/aarch64-linux-thread-multi
+	dosym /usr/lib64/perl5/vendor_perl/5.28.2/armv7a-linux-thread-multi/Image /opt/logitechmediaserver/CPAN/Image
 }
 
 lms_starting_instr() {
