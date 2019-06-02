@@ -7,11 +7,11 @@ inherit eutils user systemd
 
 MY_PN="${PN/-bin}"
 
-PERL_VER="5.28"
+PERL_VER="5.30"
 
 if [[ ${PV} == *_pre* ]] ; then
-	HASHID="cb9d31360bd4eafd2536413a372ffb3e735c8758"
-	BUILDID="1558382969"
+	HASHID="27a734367ec6ad4ddc946454798e7ac1ca1496bd"
+	BUILDID="1559133196"
 	MY_PV="${PV/_pre*}"
 	SRC_URI="http://downloads-origin.slimdevices.com/nightly/7.9/sc/${HASHID}/${MY_PN}-${MY_PV}-${BUILDID}.tgz"
 #	SRC_URI="https://www.dropbox.com/s/ghkkob0aw3nfyug/${MY_PN}-${MY_PV}-${BUILDID}.tgz"
@@ -174,8 +174,9 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}/logitechmediaserver.logrotate.d" "${MY_PN}"
 	#symlink
-	dosym /usr/lib/perl5/vendor_perl/5.28.2/armv7a-linux-thread-multi /opt/logitechmediaserver/CPAN/arch/5.28/armv7a-linux-thread-multi
-	dosym /usr/lib/perl5/vendor_perl/5.28.2/armv7a-linux-thread-multi/Image /opt/logitechmediaserver/CPAN/Image
+	dodir /opt/logitechmediaserver/CPAN/arch/5.30
+	dosym /usr/lib/perl5/vendor_perl/5.30.0/armv7a-linux-thread-multi /opt/logitechmediaserver/CPAN/arch/5.30/armv7a-linux-thread-multi
+	dosym /usr/lib/perl5/vendor_perl/5.30.0/armv7a-linux-thread-multi/Image /opt/logitechmediaserver/CPAN/Image
 }
 
 lms_starting_instr() {
