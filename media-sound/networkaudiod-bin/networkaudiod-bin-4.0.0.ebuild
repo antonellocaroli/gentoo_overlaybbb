@@ -11,14 +11,14 @@ MY_PN=${PN/-bin/}
 DESCRIPTION="Network Audio Daemon"
 HOMEPAGE="http://www.signalyst.com/consumer.html"
 SRC_URI="
-	amd64? ( https://www.signalyst.eu/bins/naa/linux/xenial/${MY_PN}_${PV}-38_amd64.deb )
-	x86?   ( https://www.signalyst.eu/bins/naa/linux/xenial/${MY_PN}_${PV}-38_i386.deb )
-	arm?   ( https://www.signalyst.eu/bins/naa/linux/stretch/${MY_PN}_${PV}-38_armhf.deb )
+	amd64? ( https://www.signalyst.eu/bins/naa/linux/buster/${MY_PN}_${PV}-43_amd64.deb )
+	arm64? ( https://www.signalyst.eu/bins/naa/linux/buster/${MY_PN}_${PV}-43_arm64.deb )
+	arm?   ( https://www.signalyst.eu/bins/naa/linux/buster/${MY_PN}_${PV}-43_armhf.deb )
 "
 
 LICENSE="Signalyst"
 SLOT="0"
-KEYWORDS="~amd64 ~x86 ~arm"
+KEYWORDS="~amd64 ~arm64 ~arm"
 RESTRICT="mirror bindist"
 
 IUSE="systemd"
@@ -47,8 +47,29 @@ src_install() {
 	mv usr etc lib "${D}" || die
 	rm "${D}usr/share/doc/networkaudiod/changelog.Debian.gz"
 	if use systemd; then
-		systemd_dounit "${S}"/lib/systemd/system/cloud-config.service
+		systemd_dounit "${FILESDIR}/${MY_PN}.service"
 	else
 		newinitd "${FILESDIR}/${MY_PN}.init.d" "${MY_PN}"
 	fi
+}
+
+pkg_postinst() {
+	# Provide some post-installation tips.
+	elog ""
+	elog ""
+	elog ""
+  elog "NetworkAudiod can be started with the following command (OpenRC):"
+  elog "\t/etc/init.d/networkaudiod start"
+  elog "or (systemd):"
+  elog "\tsystemctl start networkaudiod"
+  elog ""
+  elog "NetworkAudiod can be automatically started on each boot"
+  elog "with the following command (OpenRC):"
+  elog "\trc-update add networkaudiod default"
+  elog "or (systemd):"
+  elog "\tsystemctl enable networkaudiod"
+  elog ""
+  elog ""
+	elog ""
+	elog ""
 }
